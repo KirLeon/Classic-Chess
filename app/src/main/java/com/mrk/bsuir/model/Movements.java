@@ -9,7 +9,7 @@ public enum Movements {
     KNIGHT_JUMP(2), KING_AROUND(1);
 
 
-    private int cellsRange;
+    private final int cellsRange;
 
     public int getCellsRange() {
         return cellsRange;

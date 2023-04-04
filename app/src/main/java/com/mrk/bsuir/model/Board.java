@@ -8,7 +8,6 @@ import com.mrk.bsuir.model.impl.Queen;
 import com.mrk.bsuir.model.impl.Rook;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.stream.Stream;
 
 public class Board {
@@ -16,8 +15,6 @@ public class Board {
     private Piece[][] boardCells;
 
     private static Board boardInstance;
-
-    private List<Piece> piecesPositions;
 
     private Board() {
 
@@ -64,7 +61,16 @@ public class Board {
         boardCells[7] = (Piece[]) blackPieces.toArray();
     }
 
+    public Color getCellColor(int x, int y) {
+        return (x + y) % 2 == 0 ? Color.BLACK : Color.WHITE;
+    }
+
     public Piece getPieceFromCell(int x, int y) {
         return boardCells[x][y];
+    }
+
+    public boolean isCellUnderAttack(int x, int y){
+        //TODO make method
+        return false;
     }
 }

@@ -1,6 +1,7 @@
 package com.mrk.bsuir.model.impl;
 
 import com.mrk.bsuir.model.Color;
+import com.mrk.bsuir.model.Movements;
 import com.mrk.bsuir.model.Piece;
 
 public class Pawn extends Piece {
@@ -9,6 +10,8 @@ public class Pawn extends Piece {
 
     public Pawn(Color color) {
         super(color);
+        allowedMoves.add(Movements.PAWN_STRAIGHT);
+        allowedMoves.add(Movements.PAWN_ATTACK);
     }
 
     public boolean isFirstMove() {

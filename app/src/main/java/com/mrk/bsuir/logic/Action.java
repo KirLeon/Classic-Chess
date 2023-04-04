@@ -1,9 +1,10 @@
 package com.mrk.bsuir.logic;
 
 public enum Action {
-    BEATING(":"), CHECK("+"),
+
+    CAPTURE("x"), CHECK("+"), EN_PASSANT(":"),
     SHORT_CASTLING("0-0"), LONG_CASTLING("0-0-0"),
-    CHECKMATE("x"), PROMOTION("TQ");
+    CHECKMATE("x"), PROMOTION("!");
     //TODO change the promotion symbols
 
     private String loggingSymbol;

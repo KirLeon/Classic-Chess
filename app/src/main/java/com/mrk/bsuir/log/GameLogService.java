@@ -9,38 +9,26 @@ import com.mrk.bsuir.model.impl.Pawn;
 import com.mrk.bsuir.model.impl.Queen;
 import com.mrk.bsuir.model.impl.Rook;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class GameLogService {
 
-    private static GameLogService logServiceInstance;
     private Map<Integer, String> gameMovesRecord;
     private Map<String, Class<? extends Piece>> piecesSymbols;
     private int currentMove;
 
 
-    private GameLogService() {
+    public GameLogService() {
         currentMove = 0;
+        piecesSymbols = new HashMap<>();
+        gameMovesRecord = new HashMap<>();
         piecesSymbols.put("P", Pawn.class);
         piecesSymbols.put("N", Knight.class);
         piecesSymbols.put("B", Bishop.class);
         piecesSymbols.put("R", Rook.class);
         piecesSymbols.put("Q", Queen.class);
         piecesSymbols.put("K", King.class);
-    }
-
-    public static GameLogService getInstance() {
-        GameLogService instance = logServiceInstance;
-        if (instance == null) {
-            synchronized (GameLogService.class) {
-                instance = logServiceInstance;
-                if (instance == null) {
-                    logServiceInstance = new GameLogService();
-                    instance = logServiceInstance;
-                }
-            }
-        }
-        return instance;
     }
 
     public void logMove(int startX, int startY, int endX, int endY, Piece movingPiece, Action action) {

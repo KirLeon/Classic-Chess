@@ -8,7 +8,7 @@ public class Queen extends Piece {
 
     public Queen(Color color) {
         super(color);
-        allowedMoves.add(Movements.DIAGONAL_MOVE);
-        allowedMoves.add(Movements.STRAIGHT_MOVE);
     }
+
+
 }

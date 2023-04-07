@@ -11,7 +11,6 @@ public class King extends Piece {
 
     public King(Color color) {
         super(color);
-        allowedMoves.add(Movements.KING_AROUND);
     }
 
     public boolean isFirstMove() {

@@ -10,8 +10,6 @@ public class Pawn extends Piece {
 
     public Pawn(Color color) {
         super(color);
-        allowedMoves.add(Movements.PAWN_STRAIGHT);
-        allowedMoves.add(Movements.PAWN_ATTACK);
     }
 
     public boolean isFirstMove() {

@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background">
+
+
+    <ImageView
+        android:id="@+id/line_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="94dp"
+        android:layout_marginTop="10dp"
+        android:contentDescription="TODO SOME ICON"
+        android:src="@drawable/icon_line" />
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="match_parent"
+        android:layout_height="407dp"
+        android:layout_below="@+id/line_icon"
+        android:layout_marginTop="42dp"
+        android:scaleType="fitXY"
+        android:contentDescription="THE BOARD"
+        android:src="@drawable/chessboard" />
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="407dp"
+        android:layout_alignStart="@+id/image"
+        android:layout_alignTop="@id/image"
+        android:layout_alignEnd="@id/image"
+        android:layout_alignBottom="@+id/image"
+        android:padding="0dp">
+
+        <TableRow
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginBottom="0dp">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button07"
+                style="@style/ChessButtonStyle" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button17"
+                style="@style/ChessButtonStyle" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button27"
+                style="@style/ChessButtonStyle" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button37"
+                style="@style/ChessButtonStyle" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button47"
+                style="@style/ChessButtonStyle" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button57"
+                style="@style/ChessButtonStyle" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button67"
+                style="@style/ChessButtonStyle" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button77"
+                style="@style/ChessButtonStyle" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginBottom="0dp">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button06"
+                style="@style/ChessButtonStyle" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button16"
+                style="@style/ChessButtonStyle" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button26"
+                style="@style/ChessButtonStyle" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button36"
+                style="@style/ChessButtonStyle" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button46"
+                style="@style/ChessButtonStyle" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button56"
+                style="@style/ChessButtonStyle" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button66"
+                style="@style/ChessButtonStyle" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button76"
+                style="@style/ChessButtonStyle" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginBottom="0dp">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button05"
+                style="@style/ChessButtonStyle" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button15"
+                style="@style/ChessButtonStyle" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button25"
+                style="@style/ChessButtonStyle" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button35"
+                style="@style/ChessButtonStyle" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button45"
+                style="@style/ChessButtonStyle" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button55"
+                style="@style/ChessButtonStyle" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button65"
+                style="@style/ChessButtonStyle" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button75"
+                style="@style/ChessButtonStyle" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginBottom="0dp">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button04"
+                style="@style/ChessButtonStyle" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button14"
+                style="@style/ChessButtonStyle" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button24"
+                style="@style/ChessButtonStyle" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button34"
+                style="@style/ChessButtonStyle" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button44"
+                style="@style/ChessButtonStyle" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button54"
+                style="@style/ChessButtonStyle" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button64"
+                style="@style/ChessButtonStyle" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button74"
+                style="@style/ChessButtonStyle" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginBottom="0dp">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button03"
+                style="@style/ChessButtonStyle" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button13"
+                style="@style/ChessButtonStyle" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button23"
+                style="@style/ChessButtonStyle" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button33"
+                style="@style/ChessButtonStyle" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button43"
+                style="@style/ChessButtonStyle" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button53"
+                style="@style/ChessButtonStyle" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button63"
+                style="@style/ChessButtonStyle" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button73"
+                style="@style/ChessButtonStyle" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginBottom="0dp">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button02"
+                style="@style/ChessButtonStyle" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button12"
+                style="@style/ChessButtonStyle" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button22"
+                style="@style/ChessButtonStyle" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button32"
+                style="@style/ChessButtonStyle" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button42"
+                style="@style/ChessButtonStyle" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button52"
+                style="@style/ChessButtonStyle" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button62"
+                style="@style/ChessButtonStyle" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button72"
+                style="@style/ChessButtonStyle" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginBottom="0dp">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button01"
+                style="@style/ChessButtonStyle" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button11"
+                style="@style/ChessButtonStyle" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button21"
+                style="@style/ChessButtonStyle" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button31"
+                style="@style/ChessButtonStyle" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button41"
+                style="@style/ChessButtonStyle" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button51"
+                style="@style/ChessButtonStyle" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button61"
+                style="@style/ChessButtonStyle" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button71"
+                style="@style/ChessButtonStyle" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginBottom="0dp">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button00"
+                style="@style/ChessButtonStyle" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button10"
+                style="@style/ChessButtonStyle" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button20"
+                style="@style/ChessButtonStyle" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button30"
+                style="@style/ChessButtonStyle" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button40"
+                style="@style/ChessButtonStyle" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button50"
+                style="@style/ChessButtonStyle" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button60"
+                style="@style/ChessButtonStyle" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button70"
+                style="@style/ChessButtonStyle" />
+        </TableRow>
+
+    </TableLayout>
+
+
+</RelativeLayout>

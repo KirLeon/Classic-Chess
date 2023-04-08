@@ -1,7 +1,5 @@
 package com.mrk.bsuir.model;
 
-import android.util.Log;
-
 import com.mrk.bsuir.logic.MoveService;
 import com.mrk.bsuir.model.impl.Bishop;
 import com.mrk.bsuir.model.impl.King;
@@ -10,7 +8,7 @@ import com.mrk.bsuir.model.impl.Pawn;
 import com.mrk.bsuir.model.impl.Queen;
 import com.mrk.bsuir.model.impl.Rook;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -19,6 +17,9 @@ public class Board {
     private Piece[][] boardCells;
     private MoveService moveService;
     private Piece currentPiece = null;
+
+    private King whiteKing = null;
+    private King blackKing = null;
 
     public Board() {
         initBoard();
@@ -34,16 +35,19 @@ public class Board {
 
     public void initBoard() {
 
+        whiteKing = new King(Color.WHITE);
+        blackKing = new King(Color.BLACK);
+
         //White pieces
         Piece[] whitePieces = Stream.of(new Rook(Color.WHITE), new Knight(Color.WHITE),
-                        new Bishop(Color.WHITE), new Queen(Color.WHITE), new King(Color.WHITE),
+                        new Bishop(Color.WHITE), new Queen(Color.WHITE), whiteKing,
                         new Bishop(Color.WHITE), new Knight(Color.WHITE), new Rook(Color.WHITE))
                 .toArray(Piece[]::new);
 
 
         //Black pieces
         Piece[] blackPieces = Stream.of(new Rook(Color.BLACK), new Knight(Color.BLACK),
-                        new Bishop(Color.BLACK), new Queen(Color.BLACK), new King(Color.BLACK),
+                        new Bishop(Color.BLACK), new Queen(Color.BLACK), blackKing,
                         new Bishop(Color.BLACK), new Knight(Color.BLACK), new Rook(Color.BLACK))
                 .toArray(Piece[]::new);
 
@@ -66,7 +70,7 @@ public class Board {
 
         for (int i = 0; i < 7; i++) {
             for (int j = 0; j < 7; j++) {
-                if(getPieceFromCell(i, j) == null) continue;
+                if (getPieceFromCell(i, j) == null) continue;
                 getPieceFromCell(i, j).setStartPosition(i, j);
             }
         }
@@ -84,24 +88,6 @@ public class Board {
 
     public Piece getPieceFromCell(int x, int y) {
         return boardCells[x][y];
-    }
-
-    public boolean isCellUnderAttackForColor(int endX, int endY, Color color) {
-
-        Color enemyColor = color.equals(Color.WHITE) ? Color.BLACK : Color.WHITE;
-        Piece targetPiece;
-
-        for (int startX = 0; startX < 7; endX++) {
-            for (int startY = 0; startY < 7; startY++) {
-                targetPiece = getPieceFromCell(startX, startY);
-                if (targetPiece != null && targetPiece.getColor().equals(enemyColor)
-                        && moveService.allowPieceMove(startX, startY, endX, endY, targetPiece)) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
     }
 
     public void movePiece(int startX, int startY, int endX, int endY, Piece piece) {
@@ -128,4 +114,19 @@ public class Board {
         return null;
     }
 
+    public King getWhiteKing() {
+        return whiteKing;
+    }
+
+    public void setWhiteKing(King whiteKing) {
+        this.whiteKing = whiteKing;
+    }
+
+    public King getBlackKing() {
+        return blackKing;
+    }
+
+    public void setBlackKing(King blackKing) {
+        this.blackKing = blackKing;
+    }
 }

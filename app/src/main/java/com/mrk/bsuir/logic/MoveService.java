@@ -11,6 +11,9 @@ import com.mrk.bsuir.model.impl.Pawn;
 import com.mrk.bsuir.model.impl.Queen;
 import com.mrk.bsuir.model.impl.Rook;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MoveService {
 
     private Board board;
@@ -24,11 +27,6 @@ public class MoveService {
     //Defining valid coordinates for any piece
     private final int minAllowableX = 0;
     private final int maxAllowableX = 7;
-    private int minAllowableY;
-    private int maxAllowableY;
-
-    private boolean isBeating;
-    private boolean isFirstMove;
 
     public boolean allowPieceMove(int startX, int startY, int endX, int endY, Piece piece) {
 
@@ -113,17 +111,12 @@ public class MoveService {
 
         //min & max Y coordinate are different for white and black pawns
         if (color.equals(Color.WHITE)) {
-            minAllowableY = 1;
-            maxAllowableY = 7;
 
             if (startY > endY) {
                 return false;
             }
 
         } else {
-            minAllowableY = 6;
-            maxAllowableY = 0;
-
             if (startY < endY) {
                 return false;
             }
@@ -131,7 +124,7 @@ public class MoveService {
 
 
         //if coordinates are incorrect
-        if (startY < minAllowableY || endY > maxAllowableY) {
+        if (startY < 1 || startY > 6) {
             return false;
         }
 
@@ -206,10 +199,19 @@ public class MoveService {
 
     public boolean allowKingAroundMove(int startX, int startY, int endX, int endY, King king) {
 
-        if (Math.abs(startX - endX) == 2) return allowCastling(endX, endY, king);
+        //finding enemyKing to check his attack on this cell
+        King enemyKing = king.getColor().equals(Color.WHITE)
+                ? board.getBlackKing()
+                : board.getWhiteKing();
+        int enemyKingX = board.getPieceCords(enemyKing)[0];
+        int enemyKingY = board.getPieceCords(enemyKing)[1];
+
+        if (Math.abs(startX - endX) == 2)
+            return allowCastling(endX, endY, king, enemyKingX, enemyKingY);
         else if (Math.abs(startX - endX) > 1 || Math.abs(startY - endY) > 1
                 || board.getPieceFromCell(endX, endY) != null
-                || board.isCellUnderAttackForColor(endX, endY, king.getColor())) {
+                || canBePieceOfThisColorAttackedOnCell(endX, endY, king.getColor())
+                || isThisCellAttackedByThisKing(enemyKingX, enemyKingY, endX, endY)) {
             return false;
         }
 
@@ -218,13 +220,18 @@ public class MoveService {
 
     }
 
-    public boolean allowCastling(int endX, int endY, King king) {
+    //checking only ability to attack, not to move to avoid the recursive calls (Board 100 line)
+    public boolean isThisCellAttackedByThisKing(int kingX, int kingY, int x, int y) {
+        return Math.abs(x - kingX) < 2 && Math.abs(y - kingY) < 2;
+    }
+
+    public boolean allowCastling(int endX, int endY, King king, int enemyKingX, int enemyKingY) {
 
         //cannot castle while king is under check or it is not his first move
         if (!king.isFirstMove() || king.isUnderCheck()) return false;
 
-        int firstStepCell = 4 - Integer.compare(4, endX);
-        int secondStepCell = 4 - (Integer.compare(4, endX) * 2);
+        int firstStepCellX = 4 - Integer.compare(4, endX);
+        int secondStepCellY = 4 - (Integer.compare(4, endX) * 2);
         int rookCellX = 4 > endX ? 0 : 7;
 
         //if the rook haven't moved yet (check second condition) and its color same as the king's ->
@@ -235,11 +242,13 @@ public class MoveService {
             return false;
         }
 
-
-        if (board.getPieceFromCell(firstStepCell, endY) != null
-                || board.getPieceFromCell(secondStepCell, endY) != null
-                || board.isCellUnderAttackForColor(firstStepCell, endY, king.getColor())
-                || board.isCellUnderAttackForColor(secondStepCell, endY, king.getColor())) {
+        //checking attack on cells between king's start and end x coordinate
+        if (board.getPieceFromCell(firstStepCellX, endY) != null
+                || board.getPieceFromCell(secondStepCellY, endY) != null
+                || canBePieceOfThisColorAttackedOnCell(firstStepCellX, endY, king.getColor())
+                || isThisCellAttackedByThisKing(enemyKingX, enemyKingY, firstStepCellX, endY)
+                || canBePieceOfThisColorAttackedOnCell(secondStepCellY, endY, king.getColor())
+                || isThisCellAttackedByThisKing(enemyKingX, enemyKingY, secondStepCellY, endY)) {
             return false;
         }
 
@@ -258,12 +267,178 @@ public class MoveService {
         return true;
     }
 
-    private void clearMoveServiceParameters() {
-        minAllowableY = 0;
-        maxAllowableY = 0;
-        isBeating = false;
-        isFirstMove = false;
+
+    public boolean canBePieceOfThisColorAttackedOnCell(int endX, int endY, Color kingColor) {
+
+        Color enemyColor = kingColor.equals(Color.WHITE) ? Color.BLACK : Color.WHITE;
+        Piece targetPiece;
+
+        for (int startX = 0; startX < 8; startX++) {
+            for (int startY = 0; startY < 8; startY++) {
+
+                targetPiece = board.getPieceFromCell(startX, startY);
+
+                //excluded king from that method to avoid recursive calls and split king's moves
+                if (targetPiece == null || targetPiece instanceof King) {
+                    continue;
+                }
+
+                //pawn straight move is available as a move, but not as attack move
+                boolean pawnStraight = targetPiece instanceof Pawn
+                        && endX == board.getPieceCords(targetPiece)[0];
+                if (targetPiece.getColor().equals(enemyColor) && !pawnStraight
+                        && allowPieceMove(startX, startY, endX, endY, targetPiece)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
+    public boolean canPieceMoveHereAndBlockCheck(int endX, int endY, Color kingColor) {
+
+        Piece targetPiece;
+
+        for (int startX = 0; startX < 8; startX++) {
+            for (int startY = 0; startY < 8; startY++) {
+
+                targetPiece = board.getPieceFromCell(startX, startY);
+
+                //pawn cannot block check with attacking move. King cannot block himself too
+                if (targetPiece == null || (targetPiece instanceof Pawn &&
+                        board.getPieceCords(targetPiece)[0] != endX) || targetPiece instanceof King) {
+                    continue;
+                }
+
+                if (targetPiece.getColor().equals(kingColor) &&
+                        allowPieceMove(startX, startY, endX, endY, targetPiece)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public ArrayList<Piece> findPiecesCheckingTheKing(King king) {
+
+        Color enemyColor = king.getColor().equals(Color.WHITE) ? Color.BLACK : Color.WHITE;
+        ArrayList<Piece> checkingPieces = new ArrayList<>(3);
+
+        int kingX = board.getPieceCords(king)[0];
+        int kingY = board.getPieceCords(king)[1];
+
+        Piece targetPiece;
+
+        for (int startX = 0; startX < 8; startX++) {
+            for (int startY = 0; startY < 8; startY++) {
+                targetPiece = board.getPieceFromCell(startX, startY);
+
+                if (targetPiece == null || (targetPiece instanceof Pawn &&
+                        board.getPieceCords(targetPiece)[0] == kingX)) {
+                    continue;
+                }
+                if (targetPiece.getColor().equals(enemyColor) &&
+                        allowPieceMove(startX, startY, kingX, kingY, targetPiece)) {
+                    checkingPieces.add(targetPiece);
+                }
+            }
+        }
+
+        return checkingPieces;
+    }
+
+
+    private boolean checkCheckmate(King king, int kingPositionX, int kingPositionY) {
+
+        ArrayList<Piece> attackingPieces = findPiecesCheckingTheKing(king);
+
+        if (!king.isUnderCheck() || attackingPieces.isEmpty()) {
+            return false;
+        }
+
+        ArrayList<Integer[]> cellsAroundKing = new ArrayList<>(10);
+
+        for (int x = -1; x < 2; x++) {
+            for (int y = -1; y < 2; y++) {
+                if (x == 0 && y == 0) {
+                    continue;
+                }
+                if (allowPieceMove(kingPositionX, kingPositionY,
+                        (kingPositionX + x), (kingPositionY + y), king)) {
+                    cellsAroundKing.add(new Integer[]{kingPositionX + x, kingPositionY + y});
+                }
+            }
+        }
+
+        for (Integer[] cell : cellsAroundKing) {
+            if (allowPieceMove(kingPositionX, kingPositionY, cell[0], cell[1], king)) {
+                return false;
+            }
+        }
+
+        //double check is impossible to block or to beat two attackers in one move
+        if (attackingPieces.get(0) != null && attackingPieces.get(1) != null) {
+            return true;
+        } else if (attackingPieces.get(0) != null && attackingPieces.get(1) == null) {
+
+            Piece attackingPiece = attackingPieces.get(0);
+            int attackingX = board.getPieceCords(attackingPiece)[0];
+            int attackingY = board.getPieceCords(attackingPiece)[1];
+
+            if (canBePieceOfThisColorAttackedOnCell
+                    (attackingX, attackingY, attackingPiece.getColor())
+                    || allowPieceMove(kingPositionX, kingPositionY, attackingX, attackingY, king)) {
+                return false;
+            }
+
+            if (attackingPiece instanceof Knight || attackingPiece instanceof Pawn) {
+                return true;
+            } else {
+                List<Integer[]> cellsBetweenKingAndAttacker = findCellsBetweenKingAndAttacker(
+                        attackingX, attackingY, kingPositionX, kingPositionY);
+
+                for (Integer[] cell : cellsBetweenKingAndAttacker) {
+                    if(canPieceMoveHereAndBlockCheck(cell[0], cell[1], king.getColor())){
+                        return false;
+                    }
+                }
+            }
+        }
+
+
+        return false;
+    }
+
+    private List<Integer[]> findCellsBetweenKingAndAttacker
+            (int startX, int startY, int endX, int endY) {
+
+        List<Integer[]> cellsBetween = new ArrayList<>();
+        if (startX == endX || startY == endY) {
+            if (startX == endX) {
+                for (int i = Math.max(startY, endY); i > Math.min(startY, endY); i--) {
+                    cellsBetween.add(new Integer[]{startX, i});
+                }
+            } else {
+                for (int i = Math.max(startX, endX); i > Math.min(startX, endX); i--) {
+                    cellsBetween.add(new Integer[]{i, startY});
+                }
+            }
+        } else {
+            int x = startX;
+            int y = startY;
+            int xStep = Integer.compare(endX, startX);
+            int yStep = Integer.compare(endY, startY);
+
+            //checking obstacles in the diagonal of movement
+            while (x != endX || y != endY) {
+                x += xStep;
+                y += yStep;
+                cellsBetween.add(new Integer[]{x, y});
+            }
+        }
+        return cellsBetween;
+    }
 
 }

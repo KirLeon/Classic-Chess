@@ -2,7 +2,7 @@ package com.mrk.bsuir.model;
 
 public enum Color {
 
-    BLACK("Black"), WHITE("White");
+    WHITE("White"), BLACK("Black");
 
     private final String color;
 

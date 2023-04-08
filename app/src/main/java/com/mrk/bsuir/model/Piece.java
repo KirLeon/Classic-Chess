@@ -9,6 +9,7 @@ public class Piece {
     protected final Color color;
     protected boolean protectingKing;
     protected int[] startPosition;
+    protected boolean isChecking = false;
 
     public Piece(Color color) {
         this.color = color;
@@ -31,6 +32,14 @@ public class Piece {
         startPosition[0] = x;
         startPosition[1] = y;
         return this;
+    }
+
+    public boolean isChecking() {
+        return isChecking;
+    }
+
+    public void setChecking(boolean checking) {
+        isChecking = checking;
     }
 
     @Override

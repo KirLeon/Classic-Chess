@@ -13,6 +13,7 @@ import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.AppCompatButton;
 
 import com.mrk.bsuir.log.GameLogService;
+import com.mrk.bsuir.logic.Action;
 import com.mrk.bsuir.logic.MoveService;
 import com.mrk.bsuir.model.Board;
 import com.mrk.bsuir.model.Color;
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Board board;
     private GameLogService logService;
     private MoveService moveService;
+    private boolean checkmate;
 
     final List<Button> buttonList = new ArrayList<>(70);
 
@@ -77,16 +79,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             int x = point.x;
             int y = point.y;
+
             Log.i("MainActivity", "Нажата кнопка: " + "\n" +
                     "Координаты: " + x + "_" + y);
             Log.i("MainActivity", "Фигура в руке: " + board.getCurrentPiece());
 
             Piece piece = board.getCurrentPiece();
             if (piece != null) {
+                Log.i("Move", "Фигура защищает короля: " + board.getCurrentPiece().isProtectingKing());
 
                 if (board.getPieceCords(piece) == null) {
-                    Log.i("MainActivity", "ERROR PIECE INCORRECT POSITION");
-                    return;
+                    throw new RuntimeException("INCORRECT PIECE POSITION");
                 }
 
                 int startX = board.getPieceCords(piece)[0];
@@ -95,29 +98,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (!moveService.allowPieceMove(startX, startY, x, y, piece)) {
                     Log.w("MOVEMENTS", "Incorrect move for:" + startX + "" + startY +
                             "___" + x + "" + y);
-                    board.setCurrentPiece(null);
-                    return;
                 } else {
+
                     Log.w("MOVEMENTS", "Correct move for:" + startX + "" + startY +
                             "___" + x + "" + y);
 
+                    logService.logMove(startX, startY, x, y, piece, Action.CHECK);
                     board.movePiece(startX, startY, x, y, piece);
                     board.setCurrentPiece(null);
+
                     Log.w("AFTERMOVE", "Piece on " + startX + "" + startY + "is" +
                             board.getPieceFromCell(startX, startY));
-                    drawAllBoard();
                 }
 
+                board.setCurrentPiece(null);
+                drawAllBoard();
             } else {
-                board.setCurrentPiece(board.getPieceFromCell(x, y));
-                return;
+
+                if (board.getPieceFromCell(x, y) == null) {
+                    return;
+                }
+
+                if (board.getPieceFromCell(x, y).getColor().ordinal()
+                        == logService.getCurrentMove() % 2) {
+                    board.setCurrentPiece(board.getPieceFromCell(x, y));
+                }
+
             }
 
         }
     }
 
     public void drawAllBoard() {
-        Drawable drawable;
         AppCompatButton button;
         int id;
 
@@ -133,8 +145,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (board.getPieceFromCell(i, j) == null) {
                     button.setBackgroundDrawable(getDrawable(R.color.transparent));
                     continue;
-                }
-                else {
+                } else {
                     button.setBackgroundDrawable(getPieceDrawable(board.getPieceFromCell(i, j)));
                 }
             }
@@ -168,5 +179,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     ? AppCompatResources.getDrawable(this, R.drawable.white_king)
                     : AppCompatResources.getDrawable(this, R.drawable.black_king);
         } else throw new RuntimeException("Incorrect piece");
+    }
+
+    public Action defineAction(int startX, int startY, int endX, int endY, Piece piece) {
+
+//        if (piece instanceof King && Math.abs(startX - endX) > 1) {
+//            return endX > startX ? Action.SHORT_CASTLING : Action.LONG_CASTLING;
+//        }
+//
+//        Piece attackedPiece = board.getPieceFromCell(endX, endY);
+//
+//        if (piece instanceof Pawn) {
+//            if (endY == 0 || endY == 8) {
+//                return Action.PROMOTION;
+//            } else if (attackedPiece == null) {
+//                return Action.EN_PASSANT;
+//            }
+//        }
+//        else if(attackedPiece != null){
+//            return Action.CAPTURE;
+//        }
+
+        //TODO Finish the action, add the ability of varargs
+        return null;
     }
 }

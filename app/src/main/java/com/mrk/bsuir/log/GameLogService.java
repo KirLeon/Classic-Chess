@@ -32,7 +32,8 @@ public class GameLogService {
     }
 
     public void logMove(int startX, int startY, int endX, int endY, Piece movingPiece, Action action) {
-
+        //TODO make move logging
+        currentMove++;
     }
 
     public String getMoveByNumber(int moveNumber){
@@ -74,7 +75,4 @@ public class GameLogService {
         this.currentMove = currentMove;
     }
 
-    public void nextMove(){
-        currentMove++;
-    }
 }

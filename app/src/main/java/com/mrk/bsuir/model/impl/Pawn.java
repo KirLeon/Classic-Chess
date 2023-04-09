@@ -12,6 +12,10 @@ public class Pawn extends Piece {
         super(color);
     }
 
+    public Pawn(Color color, int startX, int startY) {
+        super(color, startX, startY);
+    }
+
     public boolean isFirstMove() {
         return firstMove;
     }

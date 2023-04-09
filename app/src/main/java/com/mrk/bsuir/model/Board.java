@@ -8,9 +8,7 @@ import com.mrk.bsuir.model.impl.Pawn;
 import com.mrk.bsuir.model.impl.Queen;
 import com.mrk.bsuir.model.impl.Rook;
 
-import java.util.ArrayList;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 public class Board {
 
@@ -25,31 +23,38 @@ public class Board {
         initBoard();
     }
 
-    public MoveService getMoveService() {
-        return moveService;
-    }
-
     public void setMoveService(MoveService moveService) {
         this.moveService = moveService;
     }
 
     public void initBoard() {
 
-        whiteKing = new King(Color.WHITE);
-        blackKing = new King(Color.BLACK);
+        whiteKing = new King(Color.WHITE, 4, 0);
+        blackKing = new King(Color.BLACK, 4, 7);
 
         //White pieces
-        Piece[] whitePieces = Stream.of(new Rook(Color.WHITE), new Knight(Color.WHITE),
-                        new Bishop(Color.WHITE), new Queen(Color.WHITE), whiteKing,
-                        new Bishop(Color.WHITE), new Knight(Color.WHITE), new Rook(Color.WHITE))
-                .toArray(Piece[]::new);
-
+        Piece[] whitePieces = new Piece[]{
+                new Rook(Color.WHITE, 0, 0),
+                new Knight(Color.WHITE, 1, 0),
+                new Bishop(Color.WHITE, 2, 0),
+                new Queen(Color.WHITE, 3, 0),
+                whiteKing,
+                new Bishop(Color.WHITE, 5, 0),
+                new Knight(Color.WHITE, 6, 0),
+                new Rook(Color.WHITE, 7, 0)
+        };
 
         //Black pieces
-        Piece[] blackPieces = Stream.of(new Rook(Color.BLACK), new Knight(Color.BLACK),
-                        new Bishop(Color.BLACK), new Queen(Color.BLACK), blackKing,
-                        new Bishop(Color.BLACK), new Knight(Color.BLACK), new Rook(Color.BLACK))
-                .toArray(Piece[]::new);
+        Piece[] blackPieces = new Piece[]{
+                new Rook(Color.BLACK, 0, 7),
+                new Knight(Color.BLACK, 1, 7),
+                new Bishop(Color.BLACK, 2, 7),
+                new Queen(Color.BLACK, 3, 7),
+                blackKing,
+                new Bishop(Color.BLACK, 5, 7),
+                new Knight(Color.BLACK, 6, 7),
+                new Rook(Color.BLACK, 7, 7)
+        };
 
         //Declaring the new board and assigning null to every cell
         boardCells = new Piece[8][8];
@@ -65,21 +70,10 @@ public class Board {
                     boardCells[i][0] = whitePieces[i];
                     boardCells[i][7] = blackPieces[i];
                     boardCells[i][1] = new Pawn(Color.WHITE);
+                    boardCells[i][1].setStartPosition(i,1);
                     boardCells[i][6] = new Pawn(Color.BLACK);
+                    boardCells[i][6].setStartPosition(i,6);
                 });
-
-        for (int i = 0; i < 7; i++) {
-            for (int j = 0; j < 7; j++) {
-                if (getPieceFromCell(i, j) == null) continue;
-                getPieceFromCell(i, j).setStartPosition(i, j);
-            }
-        }
-//
-//        for (int a = 0; a < 7; a++) {
-//            for (int b = 0; b < 7; b++) {
-//                Log.i("Board", "Piece on " + a + "" + b + " is " + getPieceFromCell(a,b));
-//            }
-//        }
     }
 
     public Color getCellColor(int x, int y) {
@@ -104,7 +98,7 @@ public class Board {
     }
 
     public int[] getPieceCords(Piece piece) {
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 if (piece.equals(getPieceFromCell(i, j))) {
                     return new int[]{i, j};
@@ -118,15 +112,24 @@ public class Board {
         return whiteKing;
     }
 
-    public void setWhiteKing(King whiteKing) {
-        this.whiteKing = whiteKing;
-    }
-
     public King getBlackKing() {
         return blackKing;
     }
 
-    public void setBlackKing(King blackKing) {
-        this.blackKing = blackKing;
+    public void hidePiece(int x, int y){
+        boardCells[x][y] = null;
     }
+
+    public void placePiece(int x, int y, Piece piece){
+        boardCells[x][y] = piece;
+    }
+
+    public void showCheckmate(Color color){
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                boardCells[i][j] = new King(color);
+            }
+        }
+    }
+
 }

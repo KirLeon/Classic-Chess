@@ -9,4 +9,7 @@ public class Bishop extends Piece {
         super(color);
     }
 
+    public Bishop(Color color, int startX, int startY) {
+        super(color, startX, startY);
+    }
 }

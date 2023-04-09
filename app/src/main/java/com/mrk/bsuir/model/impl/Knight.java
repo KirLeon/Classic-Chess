@@ -9,4 +9,8 @@ public class Knight extends Piece {
     public Knight(Color color) {
         super(color);
     }
+
+    public Knight(Color color, int startX, int startY) {
+        super(color, startX, startY);
+    }
 }

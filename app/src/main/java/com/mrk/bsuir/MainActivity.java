@@ -89,6 +89,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Log.i("Move", "Фигура защищает короля: " + board.getCurrentPiece().isProtectingKing());
 
                 if (board.getPieceCords(piece) == null) {
+                    Log.i("BEFORECRUSH: " , x + "" + y + "  " + piece + "  " + board.getPieceFromCell(x,y));
                     throw new RuntimeException("INCORRECT PIECE POSITION");
                 }
 
@@ -111,8 +112,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             board.getPieceFromCell(startX, startY));
                 }
 
+                King king = piece.getColor().equals(Color.WHITE) ? board.getWhiteKing() :
+                        board.getBlackKing();
+                if(isCheckmate(king)){
+                    board.showCheckmate(king.getColor());
+                }
+
                 board.setCurrentPiece(null);
                 drawAllBoard();
+
             } else {
 
                 if (board.getPieceFromCell(x, y) == null) {
@@ -202,5 +210,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //TODO Finish the action, add the ability of varargs
         return null;
+    }
+
+    public boolean isCheckmate(King king){
+
+        int kingX = board.getPieceCords(king)[0];
+        int kingY = board.getPieceCords(king)[1];
+
+        checkmate = moveService.checkCheckmate(king, kingX, kingY);
+        Log.d("CHECKMATE CHECKING: ", "IT IS " + checkmate);
+
+        return checkmate;
     }
 }

@@ -13,6 +13,10 @@ public class King extends Piece {
         super(color);
     }
 
+    public King(Color color, int startX, int startY) {
+        super(color, startX, startY);
+    }
+
     public boolean isFirstMove() {
         return firstMove;
     }

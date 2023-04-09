@@ -10,5 +10,7 @@ public class Queen extends Piece {
         super(color);
     }
 
-
+    public Queen(Color color, int startX, int startY) {
+        super(color, startX, startY);
+    }
 }

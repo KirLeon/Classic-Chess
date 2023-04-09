@@ -16,6 +16,12 @@ public class Piece {
         startPosition = new int[2];
     }
 
+    public Piece(Color color, int startX, int startY) {
+        this.color = color;
+        startPosition = new int[2];
+        setStartPosition(startX, startY);
+    }
+
     public Color getColor() {
         return color;
     }
@@ -59,6 +65,6 @@ public class Piece {
 
     @Override
     public String toString() {
-        return color.getColor() + " " +getClass();
+        return color.getColor() + " " + getClass().getName();
     }
 }

@@ -22,4 +22,7 @@ public class Rook extends Piece {
         this.firstMove = firstMove;
     }
 
+    public Rook(Color color, int startX, int startY) {
+        super(color, startX, startY);
+    }
 }

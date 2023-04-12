@@ -1,0 +1,83 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="16dp"
+        android:fontFamily="serif"
+        android:text="Choose a piece to promote to:"
+        android:textColor="@color/white"
+        android:textSize="24sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginTop="12dp"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/knight_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/white_knight"
+            android:drawablePadding="8dp"
+            android:gravity="bottom|center_horizontal"
+            android:background="@drawable/button_border"
+            android:text="Knight" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/bishop_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/white_bishop"
+            android:drawablePadding="8dp"
+            android:layout_marginStart="8dp"
+            android:gravity="bottom|center_horizontal"
+            android:background="@drawable/button_border"
+            android:text="Bishop" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginTop="12dp"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/rook_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/white_rook"
+            android:drawablePadding="8dp"
+            android:gravity="bottom|center_horizontal"
+            android:background="@drawable/button_border"
+            android:text="Rook" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/queen_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/white_queen"
+            android:drawablePadding="8dp"
+            android:layout_marginStart="8dp"
+            android:gravity="bottom|center_horizontal"
+            android:background="@drawable/button_border"
+            android:text="Queen" />
+    </LinearLayout>
+
+</LinearLayout>

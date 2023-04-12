@@ -13,7 +13,6 @@ import java.util.stream.IntStream;
 public class Board {
 
     private Piece[][] boardCells;
-    private MoveService moveService;
     private Piece currentPiece = null;
 
     private King whiteKing = null;
@@ -21,10 +20,6 @@ public class Board {
 
     public Board() {
         initBoard();
-    }
-
-    public void setMoveService(MoveService moveService) {
-        this.moveService = moveService;
     }
 
     public void initBoard() {
@@ -108,12 +103,13 @@ public class Board {
         return null;
     }
 
-    public King getWhiteKing() {
-        return whiteKing;
+
+    public King getKingOfThisColor(Color color){
+        return color.equals(Color.WHITE) ? whiteKing : blackKing;
     }
 
-    public King getBlackKing() {
-        return blackKing;
+    public King getKingOfAnotherColor(Color color){
+        return color.equals(Color.WHITE) ? blackKing : whiteKing;
     }
 
     public void hidePiece(int x, int y){

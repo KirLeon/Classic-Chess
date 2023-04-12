@@ -1,5 +1,6 @@
 package com.mrk.bsuir.model;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -7,9 +8,9 @@ import java.util.Objects;
 public class Piece {
 
     protected final Color color;
-    protected boolean protectingKing;
+
+    //TODO make different coordinated for promoted pieces
     protected int[] startPosition;
-    protected boolean isChecking = false;
 
     public Piece(Color color) {
         this.color = color;
@@ -26,26 +27,10 @@ public class Piece {
         return color;
     }
 
-    public boolean isProtectingKing() {
-        return protectingKing;
-    }
-
-    public void setProtectingKing(boolean protectingKing) {
-        this.protectingKing = protectingKing;
-    }
-
-    public Piece setStartPosition(int x, int y){
+    public Piece setStartPosition(int x, int y) {
         startPosition[0] = x;
         startPosition[1] = y;
         return this;
-    }
-
-    public boolean isChecking() {
-        return isChecking;
-    }
-
-    public void setChecking(boolean checking) {
-        isChecking = checking;
     }
 
     @Override

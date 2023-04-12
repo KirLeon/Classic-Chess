@@ -1,20 +1,19 @@
 package com.mrk.bsuir.model;
 
-import java.io.Serializable;
+import androidx.annotation.NonNull;
+
 import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 
-public class Piece {
+public abstract class Piece {
 
     protected final Color color;
 
     //TODO make different coordinated for promoted pieces
-    protected int[] startPosition;
+    protected final int[] startPosition;
 
     public Piece(Color color) {
-        this.color = color;
-        startPosition = new int[2];
+        this(color, -1, -1);
     }
 
     public Piece(Color color, int startX, int startY) {
@@ -27,10 +26,9 @@ public class Piece {
         return color;
     }
 
-    public Piece setStartPosition(int x, int y) {
+    public void setStartPosition(int x, int y) {
         startPosition[0] = x;
         startPosition[1] = y;
-        return this;
     }
 
     @Override
@@ -48,8 +46,10 @@ public class Piece {
         return result;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return color.getColor() + " " + getClass().getName();
     }
+
 }

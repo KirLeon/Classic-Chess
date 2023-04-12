@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import com.mrk.bsuir.R;
 
 
@@ -40,36 +39,24 @@ public class PromoteActivity extends AppCompatActivity {
         }
 
         // Set click listeners for each button
-        knightButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                chosenPiece = "Knight";
-                returnResult();
-            }
+        knightButton.setOnClickListener(v -> {
+            chosenPiece = "Knight";
+            returnResult();
         });
 
-        bishopButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                chosenPiece = "Bishop";
-                returnResult();
-            }
+        bishopButton.setOnClickListener(v -> {
+            chosenPiece = "Bishop";
+            returnResult();
         });
 
-        rookButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                chosenPiece = "Rook";
-                returnResult();
-            }
+        rookButton.setOnClickListener(v -> {
+            chosenPiece = "Rook";
+            returnResult();
         });
 
-        queenButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                chosenPiece = "Queen";
-                returnResult();
-            }
+        queenButton.setOnClickListener(v -> {
+            chosenPiece = "Queen";
+            returnResult();
         });
     }
 

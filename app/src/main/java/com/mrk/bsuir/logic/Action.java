@@ -6,7 +6,7 @@ public enum Action {
     LONG_CASTLING("0-0-0"), CHECKMATE("#"), PROMOTION("="),
     EN_PASSANT("e.p.");
 
-    private String loggingSymbol;
+    private final String loggingSymbol;
 
     public String getLoggingSymbol() {
         return loggingSymbol;

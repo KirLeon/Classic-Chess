@@ -1,5 +1,6 @@
 package com.mrk.bsuir.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
@@ -7,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,7 +30,6 @@ import com.mrk.bsuir.model.impl.Queen;
 import com.mrk.bsuir.model.impl.Rook;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -43,11 +44,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final int PROMOTE_REQUEST_CODE = 1;
     private King playerKing;
     private King enemyPlayerKing;
+    private ImageView showCheckmate;
 
     final List<Button> buttonList = new ArrayList<>(70);
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        showCheckmate = findViewById(R.id.opa);
         this.board = new Board();
         this.logService = new GameLogService(board);
         this.moveService = new MoveService(board, logService);
@@ -118,24 +122,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                     if (moveService.allowPieceMove(startX, startY, x, y, pieceInHand)) {
 
-                        if(isEnPassant(pieceInHand, startX, x, y)){
+                        if (isEnPassant(pieceInHand, startX, x, y)) {
                             actionList.add(Action.EN_PASSANT);
-                        }
-
-                        boolean pawnPromotion = ifPromotionRequired(pieceInHand, y, playerColor);
-                        boolean castling = pieceInHand instanceof King && Math.abs(startX - x) > 1;
-
-                        if (pawnPromotion) {
-                            openPromoteActivity(playerColor.getColor(), startX, x);
-                        } else if (castling) {
+                        } else if (pieceInHand instanceof King && Math.abs(startX - x) > 1) {
                             actionList.add(x == 2 ? Action.LONG_CASTLING : Action.SHORT_CASTLING);
-                            afterMove(startX, startY, x, y,
-                                    pieceInHand, null, actionList);
-                        } else {
-                            afterMove
-                                    (startX, startY, x, y,
-                                            pieceInHand, null, actionList);
+                        } else if (ifPromotionRequired(pieceInHand, y, playerColor)) {
+                            openPromoteActivity(playerColor.getColor(), startX, x);
+                            return;
                         }
+                        afterMove(startX, startY, x, y, pieceInHand, null, actionList);
                     }
                 }
             }
@@ -156,8 +151,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 button = findViewById(id);
 
                 if (board.getPieceFromCell(i, j) == null) {
-                    button.setBackgroundDrawable(getDrawable(R.color.transparent));
-                    continue;
+                    button.setBackgroundDrawable
+                            (AppCompatResources.getDrawable(this, R.color.transparent));
                 } else {
                     button.setBackgroundDrawable(getPieceDrawable(board.getPieceFromCell(i, j)));
                 }
@@ -211,22 +206,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         boolean moved = false;
 
         if (actions.contains(Action.LONG_CASTLING)
-                || actions.contains(Action.LONG_CASTLING)) {
-            int rookStartX = startX < x ? 7 : 1;
+                || actions.contains(Action.SHORT_CASTLING)) {
+
+            int rookStartX = startX < x ? 7 : 0;
             int rookEndX = rookStartX == 0 ? 3 : 5;
             Rook rook = (Rook) board.getPieceFromCell(rookStartX, startY);
 
             board.movePiece(startX, startY, x, y, pieceInHand);
             board.movePiece(rookStartX, startY, rookEndX, startY, rook);
         } else {
-            if (board.getPieceFromCell(x, y) != null) {
-                actions.add(Action.CAPTURE);
-                capturedPiece = board.getPieceFromCell(x, y);
-            }
-            if (actions.contains(Action.PROMOTION)) {
-                board.placePiece(startX, startY, null);
-                board.placePiece(x, y, promotedPiece);
-                moved = true;
+            if (actions.contains(Action.EN_PASSANT)) {
+                int enemyPawnY = y == 5 ? 4 : 3;
+                capturedPiece = board.getPieceFromCell(x, enemyPawnY);
+                if (capturedPiece == null) {
+                    throw new RuntimeException("Error during logging en passant");
+                }
+                board.placePiece(x, enemyPawnY, null);
+            } else {
+                if (board.getPieceFromCell(x, y) != null) {
+                    actions.add(Action.CAPTURE);
+                    capturedPiece = board.getPieceFromCell(x, y);
+                }
+                if (actions.contains(Action.PROMOTION)) {
+                    board.placePiece(startX, startY, null);
+                    board.placePiece(x, y, promotedPiece);
+                    moved = true;
+                }
             }
             if (!moved) {
                 board.movePiece(startX, startY, x, y, pieceInHand);
@@ -245,7 +250,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         drawAllBoard();
 
         if (isCheckmate(enemyPlayerKing)) {
-            board.showCheckmate(enemyPlayerKing.getColor());
+            showCheckmate.setVisibility(View.VISIBLE);
         }
     }
 
@@ -256,11 +261,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public boolean isEnPassant(Piece pieceInHand, int startX, int endX, int endY) {
-        if (pieceInHand instanceof Pawn && Math.abs(startX - endX) == 1 &&
-                board.getPieceFromCell(endX, endY) == null) {
-            return true;
-        }
-        return false;
+        return pieceInHand instanceof Pawn && Math.abs(startX - endX) == 1 &&
+                board.getPieceFromCell(endX, endY) == null;
     }
 
     public boolean isCheckmate(King king) {
@@ -298,6 +300,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (requestCode == PROMOTE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
 
+                assert data != null;
                 int startX = data.getIntExtra("startX", 0);
                 int endX = data.getIntExtra("endX", 0);
                 String color = data.getStringExtra("color");

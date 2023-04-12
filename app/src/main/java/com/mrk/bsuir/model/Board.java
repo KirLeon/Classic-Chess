@@ -1,6 +1,5 @@
 package com.mrk.bsuir.model;
 
-import com.mrk.bsuir.logic.MoveService;
 import com.mrk.bsuir.model.impl.Bishop;
 import com.mrk.bsuir.model.impl.King;
 import com.mrk.bsuir.model.impl.Knight;
@@ -64,9 +63,9 @@ public class Board {
                 .forEach(i -> {
                     boardCells[i][0] = whitePieces[i];
                     boardCells[i][7] = blackPieces[i];
-                    boardCells[i][1] = new Pawn(Color.WHITE);
+                    boardCells[i][1] = new Pawn(Color.WHITE, i, 1);
                     boardCells[i][1].setStartPosition(i,1);
-                    boardCells[i][6] = new Pawn(Color.BLACK);
+                    boardCells[i][6] = new Pawn(Color.BLACK, i, 6);
                     boardCells[i][6].setStartPosition(i,6);
                 });
     }
@@ -118,14 +117,6 @@ public class Board {
 
     public void placePiece(int x, int y, Piece piece){
         boardCells[x][y] = piece;
-    }
-
-    public void showCheckmate(Color color){
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                boardCells[i][j] = new King(color);
-            }
-        }
     }
 
 }

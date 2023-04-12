@@ -54,8 +54,8 @@ public class MoveService {
 
         // Check is piece protecting the king
         if (!(piece instanceof King)) {
-            King king = piece.getColor().equals(Color.WHITE) ? board.getWhiteKing() :
-                    board.getBlackKing();
+
+            King king = board.getKingOfThisColor(piece.getColor());
             int kingX = board.getPieceCords(king)[0];
             int kingY = board.getPieceCords(king)[1];
 
@@ -77,7 +77,7 @@ public class MoveService {
         } else if (piece instanceof Knight) {
             validMove = allowKnightJump(startX, startY, endX, endY);
         } else if (piece instanceof Rook) {
-            validMove = allowStraightMove(startX, startY, endX, endY, (Rook) piece);
+            validMove = allowStraightMove(startX, startY, endX, endY, piece);
         } else if (piece instanceof Queen) {
             validMove = allowStraightMove(startX, startY, endX, endY, piece) ||
                     allowDiagonalMove(startX, startY, endX, endY);
@@ -142,7 +142,6 @@ public class MoveService {
      */
     public boolean allowEnPassant(int endX, int endY, Pawn pawn) {
 
-        //TODO implement logging service
         String lastMove = logService.getLastMove();
         if (lastMove.matches(REGEX_MOVE_PATTERN)) {
 
@@ -173,11 +172,7 @@ public class MoveService {
     public boolean allowPawnAttackMove(int startX, int startY, int endX, int endY, Pawn pawn) {
 
         int direction = pawn.getColor() == Color.WHITE ? 1 : -1;
-        if (endY - startY != direction || Math.abs(startX - endX) != 1) {
-            return false;
-        }
-
-        return true;
+        return endY - startY == direction && Math.abs(startX - endX) == 1;
     }
 
     /**
@@ -191,8 +186,6 @@ public class MoveService {
             return false;
         }
 
-        int x = startX;
-        int y = startY;
         int xStep = endX - startX > 0 ? 1 : -1;
         int yStep = endY - startY > 0 ? 1 : -1;
         int iterations = Math.abs(startX - endX);
@@ -247,13 +240,6 @@ public class MoveService {
         int xDiff = Math.abs(startX - endX);
         int yDiff = Math.abs(startY - endY);
 
-        // Finding enemy king to check for its attack on this cell
-        King enemyKing = king.getColor().equals(Color.WHITE)
-                ? board.getBlackKing()
-                : board.getWhiteKing();
-        int enemyKingX = board.getPieceCords(enemyKing)[0];
-        int enemyKingY = board.getPieceCords(enemyKing)[1];
-
         // If the move is a castling move, check if it is allowed
         if (xDiff == 2)
             return allowCastling(endX, endY, king);
@@ -283,12 +269,8 @@ public class MoveService {
         if (!king.isFirstMove() || king.isUnderCheck()) return false;
 
         int firstStepCellX = 4 - Integer.compare(4, endX);
-        int secondStepCellY = 4 - (Integer.compare(4, endX) * 2);
+        int secondStepCellX = 4 - (Integer.compare(4, endX) * 2);
         int rookCellX = 4 > endX ? 0 : 7;
-
-        /** If the rook haven't moved yet (check second condition) and its color same as the king's,
-         * the rook is definitely situated at king's line (we are sure that king haven't move yet)
-         */
 
         Piece piece = board.getPieceFromCell(rookCellX, endY);
         if (!(piece instanceof Rook) || !((Rook) piece).isFirstMove()
@@ -297,14 +279,10 @@ public class MoveService {
         }
 
         //checking attack on cells between king's start and end x coordinate
-        if (board.getPieceFromCell(firstStepCellX, endY) != null
-                || board.getPieceFromCell(secondStepCellY, endY) != null
-                || isThisCellUnderAttack(firstStepCellX, endY, king.getColor())
-                || isThisCellUnderAttack(secondStepCellY, endY, king.getColor())) {
-            return false;
-        }
-
-        return true;
+        return board.getPieceFromCell(firstStepCellX, endY) == null
+                && board.getPieceFromCell(secondStepCellX, endY) == null
+                && !isThisCellUnderAttack(firstStepCellX, endY, king.getColor())
+                && !isThisCellUnderAttack(secondStepCellX, endY, king.getColor());
     }
 
     private boolean allowKnightJump(int startX, int startY, int endX, int endY) {
@@ -312,11 +290,7 @@ public class MoveService {
         int xDiff = Math.abs(startX - endX);
         int yDiff = Math.abs(startY - endY);
 
-        if (xDiff + yDiff != 3 || xDiff < 1 || yDiff < 1) {
-            return false;
-        }
-
-        return true;
+        return xDiff + yDiff == 3 && xDiff >= 1 && yDiff >= 1;
     }
 
     // This method checks only attack range of the piece excluding checking the ability to move here
@@ -481,7 +455,7 @@ public class MoveService {
         int kingX = board.getPieceCords(king)[0];
         int kingY = board.getPieceCords(king)[1];
 
-        Piece targetPiece = null;
+        Piece targetPiece;
 
         for (int startX = 0; startX < 8; startX++) {
             for (int startY = 0; startY < 8; startY++) {
@@ -525,15 +499,12 @@ public class MoveService {
                 if (targetPiece instanceof Rook && straightAttack) {
                     checkingPieces.add(targetPiece);
                     checkingPiecesAmount++;
-                    continue;
                 } else if (targetPiece instanceof Bishop && diagonalAttack) {
                     checkingPieces.add(targetPiece);
                     checkingPiecesAmount++;
-                    continue;
                 } else if (targetPiece instanceof Queen && (diagonalAttack || straightAttack)) {
                     checkingPieces.add(targetPiece);
                     checkingPiecesAmount++;
-                    continue;
                 }
 
             }
@@ -590,7 +561,7 @@ public class MoveService {
             int xStep = Integer.compare(endX, startX);
             int yStep = Integer.compare(endY, startY);
 
-            x += yStep;
+            x += xStep;
             y += yStep;
             //checking obstacles in the diagonal of movement
             while (x != endX || y != endY) {
@@ -639,7 +610,7 @@ public class MoveService {
         if (attackingPieces.size() == 2) {
             return true;
         }
-//
+
         // Check if attacking piece can be captured or blocked
         Piece attackingPiece = attackingPieces.get(0);
         int attackingX = board.getPieceCords(attackingPiece)[0];

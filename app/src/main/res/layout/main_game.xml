@@ -5,23 +5,14 @@
     android:layout_height="match_parent"
     android:background="@drawable/background">
 
-
-    <ImageView
-        android:id="@+id/line_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="94dp"
-        android:layout_marginTop="10dp"
-        android:contentDescription="TODO SOME ICON"
-        android:src="@drawable/icon_line" />
-
     <ImageView
         android:id="@+id/image"
         android:layout_width="match_parent"
-        android:layout_height="407dp"
-        android:layout_below="@+id/line_icon"
-        android:layout_marginTop="42dp"
-        android:scaleType="fitXY"
+        android:layout_height="410dp"
+        android:layout_below="@+id/drawable_wood"
+        android:layout_marginTop="50dp"
         android:contentDescription="THE BOARD"
+        android:scaleType="fitXY"
         android:src="@drawable/chessboard" />
 
     <TableLayout
@@ -34,10 +25,10 @@
         android:padding="0dp">
 
         <TableRow
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginBottom="0dp">
+            android:layout_marginBottom="0dp"
+            android:layout_weight="1">
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/button07"
@@ -75,8 +66,8 @@
         <TableRow
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginBottom="0dp">
+            android:layout_marginBottom="0dp"
+            android:layout_weight="1">
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/button06"
@@ -114,8 +105,8 @@
         <TableRow
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginBottom="0dp">
+            android:layout_marginBottom="0dp"
+            android:layout_weight="1">
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/button05"
@@ -152,9 +143,9 @@
 
         <TableRow
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginBottom="0dp">
+            android:layout_height="match_parent"
+            android:layout_marginBottom="0dp"
+            android:layout_weight="1">
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/button04"
@@ -192,8 +183,8 @@
         <TableRow
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginBottom="0dp">
+            android:layout_marginBottom="0dp"
+            android:layout_weight="1">
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/button03"
@@ -231,8 +222,8 @@
         <TableRow
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginBottom="0dp">
+            android:layout_marginBottom="0dp"
+            android:layout_weight="1">
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/button02"
@@ -270,8 +261,8 @@
         <TableRow
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginBottom="0dp">
+            android:layout_marginBottom="0dp"
+            android:layout_weight="1">
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/button01"
@@ -309,8 +300,8 @@
         <TableRow
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginBottom="0dp">
+            android:layout_marginBottom="0dp"
+            android:layout_weight="1">
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/button00"
@@ -334,7 +325,8 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/button50"
-                style="@style/ChessButtonStyle" />
+                style="@style/ChessButtonStyle"
+                android:layout_height="match_parent" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/button60"
@@ -348,14 +340,61 @@
     </TableLayout>
 
     <ImageView
-        android:id="@+id/opa"
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="15dp"
+        app:srcCompat="@drawable/icon_line" />
+
+    <ImageView
+        android:id="@+id/drawable_wood"
+        style="@style/GameMenuButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_marginTop="-3dp"
+        android:layout_below="@+id/line"
+        android:layout_height="50dp"
+        app:srcCompat="@drawable/wood" />
+
+    <ImageButton
+        android:id="@+id/undo_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/drawable_wood"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="54dp"
+        android:layout_marginBottom="0dp"
+        android:background="@drawable/undo_button"
+        android:drawablePadding="10dp"
+        android:clickable="true"
+        android:textColor="@color/grey">
+
+    </ImageButton>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/menu_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/image"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="47dp"
-        android:layout_marginBottom="47dp"
-        android:visibility="visible"
-        app:srcCompat="@drawable/invalid_move" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="@color/BurlyWood"
+        android:text="Main menu">
+
+    </androidx.appcompat.widget.AppCompatButton>
+
+    <TextView
+        android:id="@+id/checkmateText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/drawable_wood"
+        android:layout_marginTop="5dp"
+        android:layout_centerHorizontal="true"
+        android:clickable="false"
+        android:text="CHECKMATE"
+        android:textColor="@android:color/black"
+        android:textSize="30dp"
+        android:visibility="invisible" />
+
 
 </RelativeLayout>

@@ -19,4 +19,6 @@ public class Rook extends Piece {
     public Rook(Color color, int startX, int startY) {
         super(color, startX, startY);
     }
+
+
 }

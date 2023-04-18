@@ -1,0 +1,27 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background">
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/play_button"
+        android:layout_width="130dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="543dp"
+        android:backgroundTint="@color/BurlyWood"
+        android:text="Play" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/rules_button"
+        android:layout_width="130dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="48dp"
+        android:layout_marginBottom="395dp"
+        android:backgroundTint="@color/BurlyWood"
+        android:text="Game Rules" />
+
+</RelativeLayout>

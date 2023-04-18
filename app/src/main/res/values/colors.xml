@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="transparent">#00FFFFFF</color>
     <color name="grey">#444444</color>
+    <color name="BurlyWood">#DEB887</color>
 </resources>

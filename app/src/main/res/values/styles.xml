@@ -9,4 +9,12 @@
         <item name="android:adjustViewBounds">true</item>
         <item name="android:scaleType">fitCenter</item>
     </style>
+    <style name="GameMenuButtonStyle" parent="@android:style/Widget.Button">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">#00000000</item>
+        <item name="android:adjustViewBounds">true</item>
+        <item name="android:scaleType">fitXY</item>
+    </style>
 </resources>

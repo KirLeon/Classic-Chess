@@ -26,7 +26,7 @@ public class Board {
         whiteKing = new King(Color.WHITE, 4, 0);
         blackKing = new King(Color.BLACK, 4, 7);
 
-        //White pieces
+        // White pieces
         Piece[] whitePieces = new Piece[]{
                 new Rook(Color.WHITE, 0, 0),
                 new Knight(Color.WHITE, 1, 0),
@@ -38,7 +38,7 @@ public class Board {
                 new Rook(Color.WHITE, 7, 0)
         };
 
-        //Black pieces
+        // Black pieces
         Piece[] blackPieces = new Piece[]{
                 new Rook(Color.BLACK, 0, 7),
                 new Knight(Color.BLACK, 1, 7),
@@ -50,7 +50,7 @@ public class Board {
                 new Rook(Color.BLACK, 7, 7)
         };
 
-        //Declaring the new board and assigning null to every cell
+        // Declaring the new board and assigning null to every cell
         boardCells = new Piece[8][8];
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
@@ -58,7 +58,7 @@ public class Board {
             }
         }
 
-        //Filling board cells with pieces
+        // Filling board cells with pieces
         IntStream.range(0, 8)
                 .forEach(i -> {
                     boardCells[i][0] = whitePieces[i];
@@ -109,10 +109,6 @@ public class Board {
 
     public King getKingOfAnotherColor(Color color){
         return color.equals(Color.WHITE) ? blackKing : whiteKing;
-    }
-
-    public void hidePiece(int x, int y){
-        boardCells[x][y] = null;
     }
 
     public void placePiece(int x, int y, Piece piece){

@@ -5,7 +5,7 @@ import androidx.annotation.NonNull;
 import java.util.Arrays;
 import java.util.Objects;
 
-public abstract class Piece {
+public abstract class Piece{
 
     protected final Color color;
 
@@ -13,7 +13,9 @@ public abstract class Piece {
     protected final int[] startPosition;
 
     public Piece(Color color) {
-        this(color, -1, -1);
+        this.color = color;
+        startPosition = new int[2];
+        setStartPosition(-1, -1);
     }
 
     public Piece(Color color, int startX, int startY) {
